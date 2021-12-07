@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { Component, OnInit, } from '@angular/core';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 
 
@@ -12,48 +12,36 @@ import { BaseChartDirective } from 'ng2-charts';
 })
 export class BarrasComponent implements OnInit {
 
-  public barChartOptions: ChartConfiguration['options'] = {
+  public barChartOptions: ChartOptions = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
-      x: {},
-      y: {
-        min: 10
-      }
+      xAxes:[{}],
+      yAxes: [{}]
     },
     plugins: {
-      legend: {
-        display: true,
-      },
+      datalabels: {
+        anchor: 'end',
+        align: 'end'
+      }
     }
   };
+  public barChartLabels: Label[] = [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ];
   public barChartType: ChartType = 'bar';
-
-  public barChartData: ChartData<'bar'> = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
-    datasets: [
+  public barChartLegend = true;
+  public barChartData: ChartDataSets[] = [
       { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
       { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
     ]
-  };
-
-  // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
   
-  constructor() { 
-    
+  constructor() {  }
+  
+  ngOnInit(): void {
   }
 
   public randomize(): void {
     // Only Change 3 values
-    this.barChartData.datasets[0].data = [
+    this.barChartData[0].data = [
       Math.round(Math.random() * 100),
       59,
       80,
@@ -62,11 +50,6 @@ export class BarrasComponent implements OnInit {
       Math.round(Math.random() * 100),
       40 ];
 
-    this.chart?.update();
-  }
-
-  
-  ngOnInit(): void {
   }
 
 }
